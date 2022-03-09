@@ -1,0 +1,22 @@
+#	####################################################
+#	СИНТАКСИЧЕСКАЯ РАСКРАСКА ДЛЯ БИБИЛИОТЕКИ:
+#	iarduino_PCA9555
+#	####################################################
+#	ТИПЫ ДАННЫХ:							   (KEYWORD1)
+	iarduino_PCA9555	KEYWORD1
+#	####################################################
+#	МЕТОДЫ И ФУНКЦИИ:						   (KEYWORD2)
+	begin	KEYWORD2
+	reset	KEYWORD2
+	getAddress	KEYWORD2
+	pinMode	KEYWORD2
+	digitalRead	KEYWORD2
+	digitalWrite	KEYWORD2
+	portMode	KEYWORD2
+	portRead	KEYWORD2
+	portWrite	KEYWORD2
+	pinsAll	KEYWORD2
+#	####################################################
+#	КОНСТАНТЫ:								   (LITERAL1)
+	INPUT	LITERAL1
+	OUTPUT	LITERAL1
