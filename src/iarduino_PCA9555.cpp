@@ -83,7 +83,7 @@ bool	iarduino_PCA9555::portMode			(uint8_t port, uint16_t	dir){														//	
 			if(valAddr){																										//	Если модуль был инициализирован, то ...
 			//	Проверяем введённые данные:																						//
 				if( port>2 ){ return false; }																					//	Номер порта, это беззнаковое целое не больше 2.
-				dir=~dir;																										//	Инвертитуем указанные биты. Константиа OUTPUT=1, а регистре REG_PCA9555_CONFIG биты output=0.
+				dir=~dir;																										//	Инвертитуем указанные биты. Константа OUTPUT=1, а регистре REG_PCA9555_CONFIG биты output=0.
 			//	Меняем значение байта конфигурации:																				//
 				if( port<2 ){ valCONFIG[port]=dir; }																			//	Если указан порт 0 или 1, то меняем байт valCONFIG[port]
 				else		{ valCONFIG[0]=lowByte(dir); valCONFIG[1]=highByte(dir); }											//	Если указан порт 2, то меняем два байта valCONFIG[]
@@ -146,8 +146,6 @@ bool	iarduino_PCA9555::_readBytes		(uint8_t reg, uint8_t sum){															//	
 bool	iarduino_PCA9555::_writeBytes		(uint8_t reg, uint8_t sum, uint8_t num){											//	Параметры:				reg - номер первого регистра, sum - количество записываемых байт, num - номер первого элемента массива data.
 			bool	result=false;																								//	Определяем флаг       для хранения результата записи.
 			uint8_t	sumtry=10;																									//	Определяем переменную для подсчёта количества оставшихся попыток записи.
-//Serial.println(reg);
-//Serial.println(data[0]);
 			do{	result = objI2C->writeBytes(valAddr, reg, &data[num], sum);														//	Записываем в модуль valAddr начиная с регистра reg, sum байи из массива data начиная с элемента num.
 				sumtry--;	if(!result){delay(1);}																				//	Уменьшаем количество попыток записи и устанавливаем задержку при неудаче.
 			}	while		(!result && sumtry>0);																				//	Повторяем запись если она завершилась неудачей, но не более sumtry попыток.

@@ -37,7 +37,7 @@
 #define			OUTPUT				1																			//	Пример:   pinMode( 0, OUTPUT);   portMode( 0, OUTPUT);
 #endif																											//
 																												//
-#define			pinsAll(i) (i?0xFFFF:0)																			//	Пример:   portMode( 2, pinsAll(INPUT) );   portWrite( 0, pinsAll(LOW) );
+#define			pinsAll(i) (i==OUTPUT?0xFFFF:0)																	//	Пример:   portMode( 2, pinsAll(INPUT) );   portWrite( 0, pinsAll(LOW) );
 																												//
 class iarduino_PCA9555{																							//
 	public:																										//
@@ -58,7 +58,7 @@ class iarduino_PCA9555{																							//
 																												//
 		bool				portMode			(uint8_t, uint16_t	);											//	Объявляем  функцию конфигурирования порта выводов						(Параметры:	номер порта 0/1/2, биты направления).
 		uint16_t			portRead			(uint8_t			);											//	Объявляем  функцию чтения уровней с порта выводов						(Параметр:	номер порта 0/1/2).
-		bool				portWrite			(uint8_t, uint16_t	);											//	Объявляем  функцию установки уровней порта выводов						(Параметры:	номер порта 0/1/2, логические уровени).
+		bool				portWrite			(uint8_t, uint16_t	);											//	Объявляем  функцию установки уровней порта выводов						(Параметры:	номер порта 0/1/2, логические уровни).
 	private:																									//
 	/**	Внутренние переменные **/																				//
 		uint8_t				valAddrTemp		=	0;																//	Определяем переменную для хранения адреса модуля на шине I2C который был указан, но не был проверен.
