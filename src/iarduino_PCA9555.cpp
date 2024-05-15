@@ -1,13 +1,11 @@
 #include "iarduino_PCA9555.h"																									//
 																																//
 //		Инициализация модуля:																									//	Возвращаемое значение: результат инициализации.
-bool	iarduino_PCA9555::begin			(void){																					//	Параметр: отсутствует
-		//	Инициируем работу с шиной I2C:																						//
-			objI2C->begin(100);																									//	Инициируем передачу данных по шине I2C на скорости 100 кГц.
+bool	iarduino_PCA9555::_begin		(void){																					//	Параметр: отсутствует
 		//	Проверяем наличие чипа на шине I2C:																					//
 			uint8_t start = valAddrTemp; if( start==0 ){ start=0x20; }															//	Первый    проверяемый адрес на шине I2C.
 			uint8_t stop  = valAddrTemp; if( stop ==0 ){ stop =0x27; }															//	Последний проверяемый адрес на шине I2C.
-			for(uint8_t i=start; i<=stop; i++){ if( objI2C->checkAddress(i) ){ valAddr=i; i=stop+1; } }							//	Если на шине I2C есть устройство с адресом от start до stop, то сохраняем его адрес в «valAddr».
+			for(uint8_t i=start; i<=stop; i++){ if( selI2C->checkAddress(i) ){ valAddr=i; i=stop+1; } }							//	Если на шине I2C есть устройство с адресом от start до stop, то сохраняем его адрес в «valAddr».
 		//	Если модуль не найден, то возвращаем ошибку инициализации:															//
 			if( valAddr==0 ){ return false; }																					//
 			delay(5);																											//
@@ -135,7 +133,7 @@ bool	iarduino_PCA9555::portWrite			(uint8_t port, uint16_t	val){														//
 bool	iarduino_PCA9555::_readBytes		(uint8_t reg, uint8_t sum){															//	Параметры:				reg - номер первого регистра, sum - количество читаемых байт.
 			bool	result=false;																								//	Определяем флаг       для хранения результата чтения.
 			uint8_t	sumtry=10;																									//	Определяем переменную для подсчёта количества оставшихся попыток чтения.
-			do{	result = objI2C->readBytes(valAddr, reg, data, sum);															//	Считываем из модуля valAddr, начиная с регистра reg, в массив data, sum байт.
+			do{	result = selI2C->readBytes(valAddr, reg, data, sum);															//	Считываем из модуля valAddr, начиная с регистра reg, в массив data, sum байт.
 				sumtry--;	if(!result){delay(1);}																				//	Уменьшаем количество попыток чтения и устанавливаем задержку при неудаче.
 			}	while		(!result && sumtry>0);																				//	Повторяем чтение если оно завершилось неудачей, но не более sumtry попыток.
 			delayMicroseconds(500);																								//	Между пакетами необходимо выдерживать паузу.
@@ -146,7 +144,7 @@ bool	iarduino_PCA9555::_readBytes		(uint8_t reg, uint8_t sum){															//	
 bool	iarduino_PCA9555::_writeBytes		(uint8_t reg, uint8_t sum, uint8_t num){											//	Параметры:				reg - номер первого регистра, sum - количество записываемых байт, num - номер первого элемента массива data.
 			bool	result=false;																								//	Определяем флаг       для хранения результата записи.
 			uint8_t	sumtry=10;																									//	Определяем переменную для подсчёта количества оставшихся попыток записи.
-			do{	result = objI2C->writeBytes(valAddr, reg, &data[num], sum);														//	Записываем в модуль valAddr начиная с регистра reg, sum байи из массива data начиная с элемента num.
+			do{	result = selI2C->writeBytes(valAddr, reg, &data[num], sum);														//	Записываем в модуль valAddr начиная с регистра reg, sum байи из массива data начиная с элемента num.
 				sumtry--;	if(!result){delay(1);}																				//	Уменьшаем количество попыток записи и устанавливаем задержку при неудаче.
 			}	while		(!result && sumtry>0);																				//	Повторяем запись если она завершилась неудачей, но не более sumtry попыток.
 			delay(10);																											//	Ждём применения модулем записанных данных.
